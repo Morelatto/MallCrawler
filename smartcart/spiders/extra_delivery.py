@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 
-from smartcart.items import ExtraDeliveryProductLoader
+from smartcart.items import ProductLoader
 
 
 class ExtraDeliverySpider(scrapy.Spider):
@@ -22,7 +22,7 @@ class ExtraDeliverySpider(scrapy.Spider):
 
     def parse_products(self, response):
         for product in response.xpath("//div[contains(concat(' ', normalize-space(@class), ' '), ' boxProduct ')]"):
-            loader = ExtraDeliveryProductLoader(selector=product)
+            loader = ProductLoader(selector=product)
 
             loader.add_xpath('sku', './/a[@class="link"]/@href')
             loader.add_xpath('name', './/h3/a[@class="link"]/@title')
