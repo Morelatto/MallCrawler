@@ -55,3 +55,5 @@ class ExtraDeliverySpider(scrapy.Spider):
                                            category=response.meta.get("category"),
                                            sub_category=response.meta.get("sub_category")),
                                  callback=self.parse_products)
+# 16:42:10
+# 16:50:50
