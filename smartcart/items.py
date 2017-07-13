@@ -19,6 +19,7 @@ class Product(scrapy.Item):
     image = scrapy.Field()
     department = scrapy.Field()
     category = scrapy.Field()
+    status = scrapy.Field()
 
 
 class ProductLoader(ItemLoader):
@@ -31,6 +32,11 @@ class ProductLoader(ItemLoader):
     price_discount_out = to_float
     department_out = clean_text
     category_out = clean_text
+    status_out = to_int
+
+
+class ExtraDeliveryProduct(Product):
+    pass
 
 
 class SondaDeliveryProduct(Product):
