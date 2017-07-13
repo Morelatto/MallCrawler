@@ -23,14 +23,14 @@ EXTENSIONS = {
    'scrapy.extensions.telnet.TelnetConsole': None,
 }
 
-# ITEM_PIPELINES = {
-#    'smartcart.pipelines.ExtraDeliveryMySQLPipeline': 300,
-# }
+ITEM_PIPELINES = {
+   'smartcart.pipelines.ExtraDeliveryMySQLPipeline': 300,
+}
 
-# MYSQL_HOST = 'sql10.freemysqlhosting.net'
-# MYSQL_DBNAME = 'sql10184422'
-# MYSQL_USER = 'sql10184422'
-# MYSQL_PASSWD = 'f26Gx8MDu3'
+MYSQL_HOST = 'sql10.freemysqlhosting.net'
+MYSQL_DBNAME = 'sql10184422'
+MYSQL_USER = 'sql10184422'
+MYSQL_PASSWD = 'f26Gx8MDu3'
 
 # dkn65223@tqosi.com mA6^0MyIi&OB7lS8cL1lTc
 
