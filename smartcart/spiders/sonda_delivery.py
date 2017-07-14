@@ -38,9 +38,9 @@ class ExtraDeliverySpider(scrapy.Spider):
 
             loader.add_xpath('sku', './/a[@itemprop="url"]/@href')
             loader.add_xpath('name', './/span[@class="tit"]/text()')
-            loader.add_xpath('url', './/a[@itemprop="url"]/@href')
             loader.add_xpath('price', './/span[@class="price"]//span[not (@class)]/text()')
             loader.add_xpath('price_discount', './/span[@class="valor-por-sonda"]//span/text()')
+            loader.add_xpath('url', './/a[@itemprop="url"]/@href')
             loader.add_xpath('image', './/img/@src')
             loader.add_value('department', response.meta.get("department"))
             loader.add_value('category', response.meta.get("category"))

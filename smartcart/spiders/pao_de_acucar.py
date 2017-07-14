@@ -50,16 +50,17 @@ class ExtraDeliverySpider(scrapy.Spider):
 
                 loader.add_value('sku', product.get('sku'))
                 loader.add_value('name', product.get('name'))
-                loader.add_value('url', 'https://www.paodeacucar.com' + product.get('urlDetails'))
                 loader.add_value('price', product.get('priceFrom'))
                 loader.add_value('price', product.get('currentPrice'))
                 loader.add_value('price_discount', product.get('currentPrice'))
+                loader.add_value('url', 'https://www.paodeacucar.com' + product.get('urlDetails'))
                 loader.add_value('image',
                                  'https://www.paodeacucar.com' + product.get('mapOfImages').get('0').get('BIG'))
-                loader.add_value('brand', product.get('brand'))
                 loader.add_value('description', product.get('shortDescription'))
-                loader.add_value('department', response.meta.get('department'))
                 loader.add_value('category', response.meta.get('category'))
+                loader.add_value('status', product.get('stock'))
+                loader.add_value('brand', product.get('brand'))
+                loader.add_value('department', response.meta.get('department'))
 
                 yield loader.load_item()
 
@@ -69,6 +70,3 @@ class ExtraDeliverySpider(scrapy.Spider):
                     meta=dict(department=response.meta.get('department'), category=response.meta.get('category')),
                     callback=self.parse_products
                 )
-
-# 22:05:02
-# 22:08:12
