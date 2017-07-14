@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime
 from hashlib import md5
-from twisted.enterprise import adbapi
-
+from scrapy.exceptions import DropItem
 from smartcart.items import SondaDeliveryProduct, PaoDeAcucarProduct, ExtraDeliveryProduct
+from twisted.enterprise import adbapi
 
 
 class ExtraDeliveryMySQLPipeline(object):
@@ -41,54 +40,57 @@ class ExtraDeliveryMySQLPipeline(object):
 
     def _do_upsert(self, conn, item, spider):
         """Perform an insert or update."""
-        if type(item) is ExtraDeliveryProduct:
-            return self._handle_extra(conn, item, spider)
-        if type(item) is SondaDeliveryProduct:
-            return self._handle_sonda(conn, item, spider)
-        if type(item) is PaoDeAcucarProduct:
-            return self._handle_pao_de_acucar(conn, item, spider)
-
-    def _handle_extra(self, conn, item, spider):
         guid = self._get_guid(item)
-        now = datetime.utcnow().replace(microsecond=0).isoformat(' ')
 
         item_data = (
-            item.get('sku', ''),
-            item.get('name', '').replace("'", "''"),
-            item.get('price', None),
-            item.get('price_discount', None),
-            item.get('url', ''),
-            item.get('image', ''),
-            item.get('department', ''),
-            item.get('category', ''),
-            item.get('status'),
+            item.get('sku'),
+            item.get('name'),
+            item.get('price'),
+            item.get('price_discount'),
+            item.get('url'),
+            item.get('image'),
+            item.get('department'),
+            item.get('category'),
         )
 
-        conn.execute("SELECT EXISTS(SELECT 1 FROM EXTRA_DELIVERY_PRODUCTS WHERE guid = %s)", (guid,))
+        update_fields = 'sku=%s, `name`=%s, price=%s, price_discount=%s, url=%s, image=%s, department=%s, category=%s, '
+        insert_fields = 'sku, `name`, price, price_discount, url, image, department, category, '
+
+        if type(item) is ExtraDeliveryProduct:
+            table_name = 'EXTRA_DELIVERY_PRODUCTS'
+            item_data += (item.get('status'),)
+            update_fields += '`status`=%s'
+            insert_fields += '`status`'
+
+        elif type(item) is SondaDeliveryProduct:
+            table_name = 'SONDA_DELIVERY_PRODUCTS'
+            item_data += (item.get('sub_category'),)
+            update_fields += 'sub_category=%s'
+            insert_fields += 'sub_category'
+
+        elif type(item) is PaoDeAcucarProduct:
+            table_name = 'PAO_DE_ACUCAR_PRODUCTS'
+            item_data += (item.get('status'), item.get('brand'), item.get('description'),)
+            update_fields += '`status`=%s, brand=%s, description=%s'
+            insert_fields += '`status`, brand, description'
+        else:
+            raise DropItem('Invalid item class {}: {}'.format(type(item), item))
+
+        conn.execute("SELECT EXISTS(SELECT 1 FROM {} WHERE guid = %s)".format(table_name), (guid, ))
 
         if conn.fetchone()[0]:
-            conn.execute(
-                "UPDATE EXTRA_DELIVERY_PRODUCTS SET sku=%s, `name`=%s, price=%s, price_discount=%s, url=%s, image=%s, "
-                "department=%s, category=%s, `status`=%s WHERE guid=%s", item_data + (guid,)
-            )
+            conn.execute("UPDATE {} SET {} WHERE guid=%s".format(table_name, update_fields), item_data + (guid,))
             spider.logger.debug("Item updated in db: {} {}".format(guid, item))
         else:
-            conn.execute(
-                "INSERT INTO EXTRA_DELIVERY_PRODUCTS (guid, sku, `name`, price, price_discount, url, image, department,"
-                " category, `status`, created_at) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                (guid,) + item_data + (now,)
-            )
+            conn.execute("INSERT INTO {} (guid, {}) VALUES ({} %s)".format(table_name, insert_fields,
+                                                                        (insert_fields.count(',') + 1) * '%s, '),
+                         (guid,) + item_data)
             spider.logger.debug("Item stored in db: {} {}".format(guid, item))
-
-    def _handle_sonda(self, conn, item, spider):
-        pass
-
-    def _handle_pao_de_acucar(self, conn, item, spider):
-        pass
 
     def _handle_error(self, failure, item, spider):
         """Handle occurred on db interaction."""
         # do nothing, just log
+        spider.logger.error("Item failed {}".format(item))
         spider.logger.error(failure)
 
     def _get_guid(self, item):
