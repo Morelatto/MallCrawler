@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 
-from smartcart.items import ProductLoader
-from smartcart.items import ExtraDeliveryProduct
+from smartcart.items import ExtraDeliveryProductLoader
 
 
 class ExtraDeliverySpider(scrapy.Spider):
@@ -23,7 +22,7 @@ class ExtraDeliverySpider(scrapy.Spider):
 
     def parse_products(self, response):
         for product in response.xpath("//div[contains(concat(' ', normalize-space(@class), ' '), ' boxProduct ')]"):
-            loader = ProductLoader(item=ExtraDeliveryProduct(), selector=product)
+            loader = ExtraDeliveryProductLoader(selector=product)
 
             loader.add_xpath('sku', './/a[@class="link"]/@href')
             loader.add_xpath('name', './/h3/a[@class="link"]/@title')
@@ -33,6 +32,7 @@ class ExtraDeliverySpider(scrapy.Spider):
                                                './/span[@class="yellow-side"]//span[@class="text-first-item"]/text(), '
                                                './/span[@class="yellow-side"]//span[@class="text-second-item"]/text())')
             loader.add_xpath('url', './/a[@class="link"]/@href')
+            loader.add_value('image', 'http://www.deliveryextra.com.br')
             loader.add_xpath('image', './/img[@class="prdImagem img"]/@src')
             loader.add_xpath('department', '(//a[@class="breadcrumbs__label"]/@title)[2]')
             loader.add_xpath('category', '//span[@class="breadcrumbs__label breadcrumbs__label--current"]/text()')
