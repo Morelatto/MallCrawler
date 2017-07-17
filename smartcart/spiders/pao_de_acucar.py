@@ -53,7 +53,8 @@ class ExtraDeliverySpider(scrapy.Spider):
                 loader.add_value('price', product.get('priceFrom'))
                 loader.add_value('price', product.get('currentPrice'))
                 loader.add_value('price_discount', product.get('currentPrice'))
-                loader.add_value('url', 'https://www.paodeacucar.com' + product.get('urlDetails'))
+                loader.add_value('url', 'https://www.paodeacucar.com')
+                loader.add_value('url', product.get('urlDetails'))
                 loader.add_value('image',
                                  'https://www.paodeacucar.com' + product.get('mapOfImages').get('0').get('BIG'))
                 loader.add_value('description', product.get('shortDescription'))
