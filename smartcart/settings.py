@@ -23,16 +23,14 @@ EXTENSIONS = {
    'scrapy.extensions.telnet.TelnetConsole': None,
 }
 
-ITEM_PIPELINES = {
-   'smartcart.pipelines.ExtraDeliveryMySQLPipeline': 300,
-}
+# ITEM_PIPELINES = {
+#    'smartcart.pipelines.ExtraDeliveryMySQLPipeline': 300,
+# }
 
-MYSQL_HOST = 'sql10.freemysqlhosting.net'
-MYSQL_DBNAME = 'sql10184422'
-MYSQL_USER = 'sql10184422'
-MYSQL_PASSWD = 'f26Gx8MDu3'
-
-# dkn65223@tqosi.com mA6^0MyIi&OB7lS8cL1lTc
+# MYSQL_HOST = ''
+# MYSQL_DBNAME = ''
+# MYSQL_USER = ''
+# MYSQL_PASSWD = ''
 
 CONCURRENT_REQUESTS = 32
 CONCURRENT_REQUESTS_PER_DOMAIN = 32
@@ -46,4 +44,3 @@ AUTOTHROTTLE_TARGET_CONCURRENCY = 32
 AUTOTHROTTLE_DEBUG = True
 
 FEED_EXPORT_ENCODING = 'utf-8'
-
