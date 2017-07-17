@@ -40,13 +40,18 @@ class ExtraDeliverySpider(scrapy.Spider):
             loader.add_xpath('name', './/span[@class="tit"]/text()')
             loader.add_xpath('price', './/span[@class="price"]//span[not (@class)]/text()')
             loader.add_xpath('price_discount', './/span[@class="valor-por-sonda"]//span/text()')
+            loader.add_value('url', 'http://www.sondadelivery.com.br')
             loader.add_xpath('url', './/a[@itemprop="url"]/@href')
             loader.add_xpath('image', './/img/@src')
             loader.add_value('department', response.meta.get("department"))
             loader.add_value('category', response.meta.get("category"))
             loader.add_value('sub_category', response.meta.get("sub_category"))
 
-            yield loader.load_item()
+            item = loader.load_item()
+
+            yield scrapy.Request(response.urljoin(product.xpath('.//a[@itemprop="url"]/@href').extract_first()),
+                                 meta=dict(item=item),
+                                 callback=self.parse_product_state)
 
         next_page_url = response.xpath('//a[@id="ctl00_conteudo_linkPaginaProxima"]/@href').extract_first()
         if next_page_url is not None:
@@ -55,5 +60,10 @@ class ExtraDeliverySpider(scrapy.Spider):
                                            category=response.meta.get("category"),
                                            sub_category=response.meta.get("sub_category")),
                                  callback=self.parse_products)
-# 16:42:10
-# 16:50:50
+
+    # noinspection PyMethodMayBeStatic
+    def parse_product_state(self, response):
+        item = response.meta.get("item")
+        loader = SondaDeliveryProductLoader(item, selector=response)
+        loader.add_xpath('status', 'not(boolean(//strong[@class="noestoque"]))')
+        yield loader.load_item()
