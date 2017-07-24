@@ -71,5 +71,6 @@ class PaoDeAcucarProductLoader(ProductLoader):
     price_out = TakeFirst()
     price_discount_out = TakeFirst()
     url_out = join_url
+    image_out = join_url
     description_out = remove_tags
     brand_out = clean_text
