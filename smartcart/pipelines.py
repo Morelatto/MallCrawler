@@ -58,13 +58,13 @@ class ExtraDeliveryMySQLPipeline(object):
         conn.execute("SELECT EXISTS(SELECT 1 FROM {} WHERE guid = %s)".format(table_name), (guid,))
 
         if conn.fetchone()[0]:
-            conn.execute("UPDATE {} SET {} WHERE guid=%s".format(table_name, extract_field_names(item)),
-                         tuple(item.values()) + (guid,))
+            update_stmt = "UPDATE {} SET {} WHERE `guid`=%s".format(table_name, extract_field_names(item, '=%s'))
+            conn.execute(update_stmt, tuple(item.values()) + (guid,))
             spider.logger.debug("Item updated in db: {} {}".format(guid, item))
         else:
-            conn.execute("INSERT INTO {} (guid, {}) VALUES ({})".format(table_name, extract_field_names(item),
-                                                                        extract_field_names(item, '=%s')),
-                         (guid,) + tuple(item.values()))
+            insert_stmt = "INSERT INTO {} (`guid`, {}) VALUES ({}%s)".format(table_name, extract_field_names(item),
+                                                                             '%s, ' * len(item))
+            conn.execute(insert_stmt, (guid,) + tuple(item.values()))
             spider.logger.debug("Item inserted in db: {} {}".format(guid, item))
 
     # noinspection PyMethodMayBeStatic
