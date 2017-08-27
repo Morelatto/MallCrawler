@@ -20,12 +20,19 @@ FAKEUSERAGENT_FALLBACK = 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML
                          'Chrome/41.0.2228.0 Safari/537.36'
 
 EXTENSIONS = {
-   'scrapy.extensions.telnet.TelnetConsole': None,
+    'scrapy.extensions.telnet.TelnetConsole': None,
 }
 
-# ITEM_PIPELINES = {
-#    'smartcart.pipelines.ExtraDeliveryMySQLPipeline': 300,
-# }
+ITEM_PIPELINES = {
+    'scrapy_mongodb.MongoDBPipeline': 300,
+    # 'smartcart.pipelines.SmartCartMySQLPipeline': 300,
+}
+
+MONGODB_URI = 'mongodb://localhost:27017'
+MONGODB_DATABASE = 'smartcart'
+MONGODB_UNIQUE_KEY = 'url'
+MONGODB_ADD_TIMESTAMP = True
+MONGODB_SEPARATE_COLLECTIONS = True
 
 # MYSQL_HOST = ''
 # MYSQL_DBNAME = ''

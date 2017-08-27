@@ -3,16 +3,18 @@ import scrapy
 import json
 
 from smartcart.items import PaoDeAcucarProductLoader
-from urllib.parse import parse_qs, urlsplit, urlunsplit, urlencode
+from urllib import urlencode
+from urlparse import parse_qs, urlsplit, urlunsplit
 
 
 def set_query_parameters(url, params):
     scheme, netloc, path, query_string, fragment = urlsplit(url)
-    query_params = parse_qs(query_string)
+    query_params = parse_qs(query_string.encode('utf-8'))
 
-    query_params = {**query_params, **params}
+    for param_name, param_value in params.iteritems():
+        query_params[param_name] = str(param_value).encode('utf-8')
+
     new_query_string = urlencode(query_params, doseq=True)
-
     return urlunsplit((scheme, netloc, path, new_query_string, fragment))
 
 

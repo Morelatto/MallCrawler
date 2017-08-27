@@ -10,7 +10,7 @@ def extract_field_names(item, extra=''):
     return ''.join(['`{}`{}, '.format(key, extra) for key in item.keys()])[:-2]
 
 
-class ExtraDeliveryMySQLPipeline(object):
+class SmartCartMySQLPipeline(object):
     """A pipeline to store the item in a MySQL database.
     This implementation uses Twisted's asynchronous database API.
     """
