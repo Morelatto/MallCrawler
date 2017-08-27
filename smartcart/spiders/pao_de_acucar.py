@@ -18,7 +18,7 @@ def set_query_parameters(url, params):
     return urlunsplit((scheme, netloc, path, new_query_string, fragment))
 
 
-class ExtraDeliverySpider(scrapy.Spider):
+class PaoDeAcucarSpider(scrapy.Spider):
     name = 'pao_de_acucar'
     allowed_domains = ['paodeacucar.com', 'api.gpa.digital']
     start_urls = ['https://api.gpa.digital/pa/detail/categories?storeId=501&split=&showSub=true']

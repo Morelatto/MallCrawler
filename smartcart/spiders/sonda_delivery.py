@@ -4,7 +4,7 @@ import scrapy
 from smartcart.items import SondaDeliveryProductLoader
 
 
-class ExtraDeliverySpider(scrapy.Spider):
+class SondaDeliverySpider(scrapy.Spider):
     name = 'sonda_delivery'
     allowed_domains = ['sondadelivery.com.br']
     start_urls = ['http://www.sondadelivery.com.br/']
