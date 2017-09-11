@@ -28,10 +28,15 @@ ITEM_PIPELINES = {
     # 'smartcart.pipelines.SmartCartMySQLPipeline': 300,
 }
 
-MONGODB_URI = 'mongodb://localhost:27017'
-MONGODB_DATABASE = 'smartcart'
+MONGODB_IP = '104.154.39.112'
+MONGODB_PORT = '12421'
+MONGODB_USER = 'recordsUserAdmin'
+MONGODB_PWD = 'k08$sq54'
+MONGODB_DATABASE = 'econofy'
+MONGODB_URI = 'mongodb://{user}:{password}@{address}:{port}/{db}'.format(user=MONGODB_USER, password=MONGODB_PWD,
+                                                                         address=MONGODB_IP, port=MONGODB_PORT,
+                                                                         db=MONGODB_DATABASE)
 MONGODB_UNIQUE_KEY = 'url'
-MONGODB_ADD_TIMESTAMP = True
 MONGODB_SEPARATE_COLLECTIONS = True
 
 # MYSQL_HOST = ''
