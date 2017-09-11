@@ -37,6 +37,7 @@ MONGODB_URI = 'mongodb://{user}:{password}@{address}:{port}/{db}'.format(user=MO
                                                                          address=MONGODB_IP, port=MONGODB_PORT,
                                                                          db=MONGODB_DATABASE)
 MONGODB_UNIQUE_KEY = 'url'
+MONGODB_ADD_TIMESTAMP = True
 MONGODB_SEPARATE_COLLECTIONS = True
 
 # MYSQL_HOST = ''
