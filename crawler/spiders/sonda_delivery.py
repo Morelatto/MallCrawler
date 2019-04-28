@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 
-from smartcart.items import SondaDeliveryProductLoader
+from crawler.items import SondaDeliveryProductLoader
 
 
 class SondaDeliverySpider(scrapy.Spider):

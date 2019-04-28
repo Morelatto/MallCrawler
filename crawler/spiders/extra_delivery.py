@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 
-from smartcart.items import ExtraDeliveryProductLoader
+from crawler.items import ExtraDeliveryProductLoader
 
 
 class ExtraDeliverySpider(scrapy.Spider):

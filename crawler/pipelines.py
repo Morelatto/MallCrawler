@@ -2,7 +2,8 @@
 
 from hashlib import md5
 from scrapy.exceptions import DropItem
-from smartcart.items import SondaDeliveryProduct, PaoDeAcucarProduct, ExtraDeliveryProduct
+
+from crawler.items import SondaDeliveryProduct, PaoDeAcucarProduct, ExtraDeliveryProduct
 from twisted.enterprise import adbapi
 
 
@@ -10,7 +11,7 @@ def extract_field_names(item, extra=''):
     return ''.join(['`{}`{}, '.format(key, extra) for key in item.keys()])[:-2]
 
 
-class SmartCartMySQLPipeline(object):
+class MySQLPipeline(object):
     """A pipeline to store the item in a MySQL database.
     This implementation uses Twisted's asynchronous database API.
     """

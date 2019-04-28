@@ -2,7 +2,7 @@
 import scrapy
 import json
 
-from smartcart.items import PaoDeAcucarProductLoader
+from crawler.items import PaoDeAcucarProductLoader
 from urllib import urlencode
 from urlparse import parse_qs, urlsplit, urlunsplit
 
